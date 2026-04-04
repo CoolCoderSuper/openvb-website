@@ -1,0 +1,435 @@
+---
+import Layout from '../layouts/Layout.astro';
+import EditorWindow from '../components/EditorWindow.astro';
+
+const helloWorldCode = `Module HelloWorld
+    Sub Main()
+        ' Welcome to VB.NET!
+        Dim name As String = "World"
+        Console.WriteLine($"Hello, {name}!")
+    End Sub
+End Module`;
+
+const developerCode = `Public Class Developer
+    Public Property Name As String
+    Public Property Language As String = "VB.NET"
+
+    Public Function Greet() As String
+        Return $"Hi! I'm {Name}, I love {Language}!"
+    End Function
+
+    Public Function IsProductiveToday() As Boolean
+        Return True ' Always!
+    End Function
+
+End Class`;
+
+const dataProcessingCode = `Imports System.Linq
+
+Module DataProcessing
+    Sub Main()
+        Dim scores = {95, 87, 92, 78, 96}
+
+        Dim topScores = From s In scores
+                        Where s >= 90
+                        Order By s Descending
+                        Select s
+
+        For Each score In topScores
+            Console.WriteLine($"Top: {score}")
+        Next
+    End Sub
+End Module`;
+
+const features = [
+  {
+    title: "Community Projects",
+    description: "We build real, useful open-source software written in VB.NET: libraries, tools, frameworks, and apps that prove the language is alive and capable.",
+    gFrom: "rgba(0,180,216,0.18)",
+    gTo: "rgba(0,180,216,0.04)",
+    accent: "#00B4D8",
+  },
+  {
+    title: "Modern Tooling",
+    description: "Maintaining and improving the VB developer experience: analyzers, formatters, VS Code extensions, and templates so VB feels like a first-class language.",
+    gFrom: "rgba(124,58,237,0.18)",
+    gTo: "rgba(124,58,237,0.04)",
+    accent: "#A855F7",
+  },
+  {
+    title: "Up-to-Date Docs",
+    description: "Clear, modern documentation written by developers who actually use VB. From getting started to advanced patterns, no stale MSDN pages.",
+    gFrom: "rgba(245,158,11,0.18)",
+    gTo: "rgba(245,158,11,0.04)",
+    accent: "#F59E0B",
+  },
+  {
+    title: "Language Advocacy",
+    description: "We push for VB.NET to receive the same investment as C#. We file issues, write proposals, attend community summits, and make noise.",
+    gFrom: "rgba(16,185,129,0.18)",
+    gTo: "rgba(16,185,129,0.04)",
+    accent: "#10B981",
+  },
+  {
+    title: "The OpenVB Fork",
+    description: "If Microsoft won't take VB forward, we will. OpenVB is laying the groundwork for an independent language spec, compiler, and runtime that is community-owned, forever.",
+    gFrom: "rgba(244,63,94,0.18)",
+    gTo: "rgba(244,63,94,0.04)",
+    accent: "#F43F5E",
+  },
+  {
+    title: "Open Source Everything",
+    description: "Every line of code we write, every decision we make is fully public. Community-governed, transparent, and free forever. No VC money. No gatekeeping.",
+    gFrom: "rgba(96,165,250,0.18)",
+    gTo: "rgba(96,165,250,0.04)",
+    accent: "#60A5FA",
+  },
+];
+
+const stats = [
+  { value: "30+",     label: "Years of VB History" },
+  { value: "Open",    label: "Source & Governed" },
+  { value: "∞",       label: "VB's Potential" },
+];
+
+const codeItems = [
+  "Open-source libraries and NuGet packages in VB",
+  "Community tooling: analyzers, formatters, templates",
+  "Reference apps showing modern VB.NET patterns",
+  "Everything on GitHub, everything accepting PRs",
+];
+
+const roadmapPhases = [
+  {
+    phase: "Phase 1",
+    status: "Now",
+    statusColor: "#28C840",
+    title: "Community & Projects",
+    description: "Build the foundation: gather contributors, launch open-source VB.NET projects, ship tooling improvements, and write the documentation the language deserves.",
+    accent: "#00B4D8",
+    items: ["Open-source project launches", "Contributor community", "Modern docs & tutorials", "VS Code extension improvements"],
+  },
+  {
+    phase: "Phase 2",
+    status: "Near",
+    statusColor: "#F59E0B",
+    title: "Language Evolution",
+    description: "Push VB forward within the .NET ecosystem. File language proposals, advocate for parity with C#, develop analyzers and code generation tools.",
+    accent: "#A855F7",
+    items: ["Language feature proposals", "Roslyn analyzer suite", "C# feature parity campaign", "Community governance structure"],
+  },
+  {
+    phase: "Phase 3",
+    status: "Future",
+    statusColor: "#F43F5E",
+    title: "The OpenVB Fork",
+    description: "An independent Visual Basic: community-owned spec, open compiler, self-governing language evolution. VB, freed from corporate indifference.",
+    accent: "#F43F5E",
+    items: ["OpenVB language specification", "Independent compiler project", "Community-governed RFC process", "VB, owned by its users"],
+  },
+];
+---
+
+<Layout
+  title="OpenVB — Visual Basic for Everyone"
+  description="OpenVB Foundation — the home of Visual Basic .NET. Simple enough for beginners. Powerful enough for production. Join the community keeping VB alive and modern."
+  keywords={["VB.NET", "Visual Basic", "OpenVB", ".NET", "programming", "open source"]}
+>
+  <div class="min-h-screen bg-[#07090F] text-slate-100 overflow-x-hidden">
+
+    <!-- HERO -->
+    <section class="relative min-h-screen flex items-center pt-20">
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="background: linear-gradient(180deg, #0D1033 0%, #07090F 60%)"
+      ></div>
+      <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+      <div class="absolute top-32 left-[15%] w-[500px] h-[500px] rounded-full pointer-events-none"
+           style="background: radial-gradient(circle, rgba(0,180,216,0.12) 0%, transparent 70%)"></div>
+      <div class="absolute top-48 right-[10%] w-[400px] h-[400px] rounded-full pointer-events-none"
+           style="background: radial-gradient(circle, rgba(0,180,216,0.08) 0%, transparent 70%)"></div>
+
+      <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10 py-20 grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+
+        <!-- Left: Copy -->
+        <div class="space-y-8">
+          <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.07] tracking-tight text-white">
+            Visual Basic<br />
+            has a{' '}
+            <span class="gradient-text">future.</span>
+          </h1>
+
+          <p class="text-lg lg:text-xl text-slate-400 max-w-lg leading-relaxed">
+            We're building it. The OpenVB Foundation develops community projects,
+            advances the tooling, and is laying the groundwork to take
+            VB.NET wherever Microsoft won't.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-4">
+            <a
+              href="/community"
+              class="btn-glow px-7 py-3.5 rounded-xl font-semibold text-white text-base transition-all duration-300"
+              style="background: #00B4D8"
+            >
+              Join the Foundation
+            </a>
+            <a
+              href="/roadmap"
+              class="px-7 py-3.5 rounded-xl font-semibold text-slate-300 text-base border border-white/10 hover:bg-white/[0.05] hover:border-white/20 transition-all duration-200"
+            >
+              See Our Roadmap →
+            </a>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-6 text-sm text-slate-500 pt-2">
+            <span class="flex items-center gap-2">
+              <span class="text-[#28C840]">✓</span> Community-Driven
+            </span>
+            <span class="flex items-center gap-2">
+              <span class="text-[#28C840]">✓</span> 100% Open Source
+            </span>
+            <span class="flex items-center gap-2">
+              <span class="text-[#28C840]">✓</span> Free Forever
+            </span>
+          </div>
+        </div>
+
+        <!-- Right: Editor -->
+        <div class="w-full">
+          <EditorWindow
+            filename="HelloWorld.vb"
+            gradientFrom="rgba(0,180,216,0.35)"
+            gradientTo="rgba(0,180,216,0.08)"
+            code={helloWorldCode}
+          />
+
+          <div class="mt-4 ml-2 flex items-center gap-3 text-sm text-slate-500">
+            <span class="w-2 h-2 rounded-full bg-[#28C840]"></span>
+            <span class="font-mono text-[#28C840]">Hello, World!</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS STRIP -->
+    <div class="border-y border-white/[0.05] bg-white/[0.02]">
+      <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-3 gap-8 text-center">
+        {stats.map((s) => (
+          <div>
+            <div class="text-3xl lg:text-4xl font-bold text-white">{s.value}</div>
+            <div class="text-sm text-slate-500 mt-1">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- MISSION -->
+    <section class="py-28 px-6 lg:px-10">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16 space-y-4">
+          <h2 class="text-4xl lg:text-5xl font-bold text-white">
+            What we're building
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {features.map((f) => (
+            <div
+              class="group p-6 rounded-2xl border border-white/[0.06] transition-all duration-300 hover:border-white/[0.12] hover:-translate-y-0.5 cursor-default"
+              style={`background: linear-gradient(145deg, ${f.gFrom}, ${f.gTo})`}
+            >
+              <h3 class="text-base font-semibold text-white mb-2">{f.title}</h3>
+              <p class="text-slate-400 text-sm leading-relaxed">{f.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CODE SHOWCASE -->
+    <section class="py-28 px-6 lg:px-10 border-y border-white/[0.05]"
+             style="background: linear-gradient(180deg, rgba(13,16,51,0.4) 0%, transparent 100%)">
+      <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+
+        <div class="space-y-6 lg:order-2">
+          <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight">
+            We build real things.<br />In VB. Today.
+          </h2>
+          <p class="text-slate-400 leading-relaxed">
+            The best way to prove a language has a future is to use it. Together, we ship
+            open-source projects written entirely in VB.NET: real libraries,
+            real tools, real applications.
+          </p>
+          <p class="text-slate-400 leading-relaxed">
+            Every project is a learning resource and a contribution to the ecosystem.
+            Anyone can jump in, open a PR, or start something new.
+          </p>
+          <ul class="space-y-3 text-sm text-slate-300 pt-2">
+            {codeItems.map((item) => (
+              <li class="flex items-start gap-3">
+                <span
+                  class="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs shrink-0"
+                  style="background: rgba(0,180,216,0.15); color: #00B4D8"
+                >
+                  ✓
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="lg:order-1">
+          <EditorWindow
+            filename="Developer.vb"
+            gradientFrom="rgba(0,180,216,0.3)"
+            gradientTo="rgba(0,180,216,0.06)"
+            code={developerCode}
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- LINQ SHOWCASE -->
+    <section class="py-28 px-6 lg:px-10">
+      <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+
+        <div class="space-y-6 lg:order-1">
+          <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight">
+            If Microsoft won't take<br />
+            VB forward: we will.
+          </h2>
+          <p class="text-slate-400 leading-relaxed">
+            Microsoft has deprioritized VB.NET. New language features go to C# first,
+            or not to VB at all. The community deserves better, and we're going to
+            make sure it gets it.
+          </p>
+          <p class="text-slate-400 leading-relaxed">
+            The OpenVB Foundation is building toward an independent Visual Basic: our own
+            specification, our own compiler, community-owned and community-driven.
+            VB.NET is just the beginning.
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center gap-2 text-sm font-medium transition-colors"
+            style="color: #F43F5E"
+          >
+            Read the fork proposal →
+          </a>
+        </div>
+
+        <div class="lg:order-2">
+          <EditorWindow
+            filename="DataProcessing.vb"
+            gradientFrom="rgba(245,158,11,0.3)"
+            gradientTo="rgba(16,185,129,0.15)"
+            code={dataProcessingCode}
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="py-28 px-6 lg:px-10 border-y border-white/[0.05]"
+             style="background: linear-gradient(180deg, rgba(13,16,51,0.5) 0%, transparent 100%)">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16 space-y-4">
+          <h2 class="text-4xl lg:text-5xl font-bold text-white">
+            Where we're going
+          </h2>
+          <p class="text-slate-400 text-lg max-w-xl mx-auto leading-relaxed">
+            Three phases. One mission: a thriving, independent future for Visual Basic.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6 relative">
+          {roadmapPhases.map((phase) => (
+            <div class="relative p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02] flex flex-col gap-4">
+              <div>
+                <div class="text-xs font-semibold uppercase tracking-widest mb-1" style={`color: ${phase.accent}`}>
+                  {phase.phase}
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">{phase.title}</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">{phase.description}</p>
+              </div>
+              <ul class="space-y-2 pt-2 border-t border-white/[0.05]">
+                {phase.items.map((item) => (
+                  <li class="flex items-center gap-2 text-sm text-slate-400">
+                    <span class="text-xs" style={`color: ${phase.accent}`}>→</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- JOIN CTA -->
+    <section class="py-28 px-6 lg:px-10">
+      <div class="max-w-4xl mx-auto text-center space-y-10">
+        <div class="relative">
+          <div
+            class="absolute inset-0 blur-3xl opacity-30 pointer-events-none rounded-full mx-auto"
+            style="background: radial-gradient(ellipse, #00B4D8 0%, rgba(0,180,216,0.2) 60%, transparent 100%); width: 60%; height: 200%; top: -50%; left: 20%"
+          ></div>
+          <h2 class="relative text-5xl lg:text-6xl font-bold text-white leading-tight">
+            VB has 30 years of history.<br />
+            <span class="gradient-text">Help write the next chapter.</span>
+          </h2>
+        </div>
+
+        <p class="text-slate-400 text-xl max-w-2xl mx-auto leading-relaxed">
+          OpenVB Foundation is open to everyone. Whether you write VB daily,
+          used to, or are just curious — your contribution matters.
+          Start with a pull request, a discussion, or just say hello.
+        </p>
+
+        <div class="relative mx-auto max-w-xl">
+          <div
+            class="absolute -inset-px rounded-2xl blur-sm"
+            style="background: rgba(0,180,216,0.25)"
+          ></div>
+          <div class="relative bg-[#0E1117] border border-white/[0.07] rounded-2xl p-6 font-mono text-sm text-left space-y-1">
+            <div class="text-slate-600 text-xs mb-3 select-none"># get started with VB.NET today</div>
+            <div>
+              <span class="text-slate-500 select-none mr-2">$</span>
+              <span class="text-[#00B4D8]">dotnet new console --language VB -n MyApp</span>
+            </div>
+            <div>
+              <span class="text-slate-500 select-none mr-2">$</span>
+              <span class="text-slate-300">cd MyApp</span>
+            </div>
+            <div>
+              <span class="text-slate-500 select-none mr-2">$</span>
+              <span class="text-[#00B4D8]">dotnet run</span>
+            </div>
+            <div class="pt-2 text-[#28C840] flex items-center gap-2">
+              <span class="opacity-60">→</span> Hello, World!
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-4 pt-2">
+          <a
+            href="/community"
+            class="btn-glow px-8 py-4 rounded-xl font-semibold text-white text-lg transition-all duration-300"
+            style="background: #00B4D8"
+          >
+            Join the Foundation
+          </a>
+          <a
+            href="https://github.com/OpenVBdotnet/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-8 py-4 rounded-xl font-semibold text-slate-300 text-lg border border-white/10 hover:bg-white/[0.05] hover:border-white/20 transition-all duration-200"
+          >
+            View Projects on GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Layout>

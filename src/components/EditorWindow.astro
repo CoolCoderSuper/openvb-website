@@ -1,0 +1,198 @@
+---
+interface Props {
+  filename: string;
+  gradientFrom: string;
+  gradientTo: string;
+  code?: string;
+}
+
+const { filename, gradientFrom, gradientTo, code } = Astro.props;
+
+// ── VB.NET syntax highlighter ────────────────────────────────────────────────
+
+const KEYWORDS = new Set([
+  'Module', 'End', 'Sub', 'Function', 'Class', 'Property',
+  'Imports', 'Dim', 'As', 'Public', 'Private', 'Protected', 'Friend',
+  'Return', 'For', 'Each', 'In', 'Next', 'If', 'Then', 'Else', 'ElseIf',
+  'New', 'From', 'Where', 'Order', 'By', 'Select', 'Descending', 'Ascending',
+  'Not', 'And', 'Or', 'AndAlso', 'OrElse', 'Is', 'IsNot', 'Like', 'Mod',
+  'Let', 'Get', 'Set', 'ReadOnly', 'WriteOnly', 'Shared', 'Static',
+  'Interface', 'Implements', 'Inherits', 'Namespace', 'Structure', 'Enum',
+  'Try', 'Catch', 'Finally', 'Throw', 'Using', 'With', 'Case', 'Exit',
+  'Continue', 'Do', 'Loop', 'While', 'Until', 'Await', 'Async', 'Handles',
+  'AddressOf', 'GetType', 'TypeOf', 'ByVal', 'ByRef', 'Optional',
+  'ParamArray', 'Overrides', 'Overridable', 'MustOverride', 'Shadows',
+  'Overloads', 'True', 'False', 'Nothing',
+]);
+
+// Built-in type names → teal
+const BUILTIN_TYPES = new Set([
+  'String', 'Integer', 'Long', 'Short', 'Byte', 'SByte',
+  'UInteger', 'ULong', 'UShort', 'Single', 'Double', 'Decimal',
+  'Char', 'Date', 'Object', 'Boolean',
+]);
+
+// After these keywords, the next bare identifier is a type name
+const TYPE_CTX = new Set([
+  'As', 'New', 'Class', 'Inherits', 'Implements',
+  'Structure', 'Enum', 'Interface', 'Module', 'Imports',
+]);
+
+// After these keywords, the next bare identifier is a callable name
+const FUNC_CTX = new Set(['Sub', 'Function']);
+
+function esc(s: string) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function sp(color: string, text: string) {
+  return `<span style="color:${color}">${esc(text)}</span>`;
+}
+
+function tokenizeLine(line: string): string {
+  let out = '';
+  let i   = 0;
+  let prev = ''; // most recent keyword token
+
+  while (i < line.length) {
+    const ch = line[i];
+
+    // Whitespace — pass through, preserve prev
+    if (ch === ' ' || ch === '\t') {
+      out += ch;
+      i++;
+      continue;
+    }
+
+    // Comment — rest of line
+    if (ch === "'") {
+      out += sp('#6A9955', line.slice(i));
+      break;
+    }
+
+    // String literal — plain " or interpolated $"
+    if (ch === '"' || (ch === '$' && line[i + 1] === '"')) {
+      const start = i;
+      if (ch === '$') i++;
+      i++; // opening "
+      while (i < line.length) {
+        if (line[i] === '"') {
+          i++;
+          if (line[i] === '"') { i++; continue; } // doubled-quote escape
+          break;
+        }
+        i++;
+      }
+      out += sp('#CE9178', line.slice(start, i));
+      prev = '';
+      continue;
+    }
+
+    // Numeric literal
+    if (/[0-9]/.test(ch)) {
+      const start = i;
+      while (i < line.length && /[0-9._]/.test(line[i])) i++;
+      out += sp('#B5CEA8', line.slice(start, i));
+      prev = '';
+      continue;
+    }
+
+    // Identifier / keyword
+    if (/[a-zA-Z_]/.test(ch)) {
+      const start = i;
+      while (i < line.length && /[a-zA-Z0-9_]/.test(line[i])) i++;
+      const word = line.slice(start, i);
+
+      if (KEYWORDS.has(word)) {
+        out += sp('#569CD6', word);
+        prev = word;
+      } else if (BUILTIN_TYPES.has(word)) {
+        out += sp('#4EC9B0', word);
+        prev = '';
+      } else if (TYPE_CTX.has(prev)) {
+        // e.g. "As Developer", "Class HelloWorld", "New List"
+        out += sp('#4EC9B0', word);
+        prev = '';
+      } else if (FUNC_CTX.has(prev)) {
+        // e.g. "Sub Main", "Function Greet"
+        out += sp('#DCDCAA', word);
+        prev = '';
+      } else {
+        // method call if immediately followed by "("
+        const ahead = line.slice(i).trimStart();
+        out += ahead.startsWith('(')
+          ? sp('#DCDCAA', word)
+          : sp('#9CDCFE', word);
+        prev = '';
+      }
+      continue;
+    }
+
+    // Anything else — operators, punctuation
+    out += esc(ch);
+    prev = '';
+    i++;
+  }
+
+  return out || '&nbsp;';
+}
+
+function highlight(raw: string): string {
+  return raw
+    .trim()
+    .split('\n')
+    .map(line => tokenizeLine(line))
+    .join('\n');
+}
+
+const lineNums = code
+  ? Array.from({ length: code.trim().split('\n').length }, (_, i) => i + 1)
+  : [];
+
+const rendered = code ? highlight(code) : null;
+---
+
+<div class="relative">
+  <div
+    class="absolute -inset-px rounded-2xl blur-sm"
+    style={`background: linear-gradient(135deg, ${gradientFrom}, ${gradientTo})`}
+  ></div>
+  <div class="relative bg-[#0E1117] rounded-2xl border border-white/[0.07] overflow-hidden shadow-2xl">
+    <!-- Title bar -->
+    <div class="flex items-center gap-1.5 px-4 py-3 border-b border-white/[0.06] bg-[#161B27]">
+      <div class="w-3 h-3 rounded-full bg-[#FF5F57]"></div>
+      <div class="w-3 h-3 rounded-full bg-[#FEBC2E]"></div>
+      <div class="w-3 h-3 rounded-full bg-[#28C840]"></div>
+      <span class="ml-4 text-xs text-slate-500 font-mono">{filename}</span>
+    </div>
+    <!-- Code area -->
+    <div class="flex text-sm font-mono p-6 overflow-x-auto">
+      {code ? (
+        <>
+          <div class="text-slate-600 select-none pr-5 text-right shrink-0 leading-7" style="min-width: 2ch">
+            {lineNums.map((n) => <div>{n}</div>)}
+          </div>
+          <pre class="vb-code min-w-0" set:html={rendered} />
+        </>
+      ) : (
+        <slot />
+      )}
+    </div>
+    <!-- Status bar -->
+    <div class="flex items-center gap-4 px-4 py-1.5 bg-[#0D7EC0] text-xs text-white/90">
+      <span>VB.NET</span>
+      <span class="opacity-60">UTF-8</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  pre.vb-code {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.75rem;
+  }
+</style>

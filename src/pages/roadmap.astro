@@ -1,0 +1,219 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CheckIcon from '../components/CheckIcon.astro';
+
+const PHASES = [
+  {
+    phase: "Phase 1",
+    number: "01",
+    status: "Now",
+    statusColor: "#28C840",
+    title: "Community & Projects",
+    accent: "#00B4D8",
+    description: "Build the foundation. Gather contributors, ship open-source VB.NET projects, improve the developer experience, and write documentation the language actually deserves.",
+    milestones: [
+      { label: "Launch OpenVB Foundation",         done: true,  active: false },
+      { label: "Establish GitHub organization",    done: true,  active: false },
+      { label: "Publish openvb.net website",       done: true,  active: false },
+      { label: "Launch openvb-analyzers project",  done: false, active: true  },
+      { label: "Launch vb-templates project",      done: false, active: true  },
+      { label: "Ship first NuGet packages",        done: false, active: false },
+      { label: "Recruit 10 core contributors",     done: false, active: false },
+      { label: "Modern getting-started guide",     done: false, active: false },
+      { label: "VS Code extension improvements",   done: false, active: false },
+      { label: "Community Discord server",         done: false, active: false },
+    ],
+  },
+  {
+    phase: "Phase 2",
+    number: "02",
+    status: "Near",
+    statusColor: "#F59E0B",
+    title: "Language Evolution",
+    accent: "#A855F7",
+    description: "Push VB forward within the .NET ecosystem. File language proposals, advocate for parity with C#, expand the analyzer suite, and establish formal community governance.",
+    milestones: [
+      { label: "First language feature proposals filed",        done: false, active: false },
+      { label: "Roslyn analyzer suite v2",                      done: false, active: false },
+      { label: "C# language parity campaign launch",            done: false, active: false },
+      { label: "Community governance structure (RFC process)",  done: false, active: false },
+      { label: "First OpenVB community summit",                 done: false, active: false },
+      { label: "vbfmt formatter — first stable release",       done: false, active: false },
+      { label: "vscode-vb extension — first release",          done: false, active: false },
+      { label: "VB.NET pattern library & cookbook",             done: false, active: false },
+    ],
+  },
+  {
+    phase: "Phase 3",
+    number: "03",
+    status: "Future",
+    statusColor: "#F43F5E",
+    title: "The OpenVB Fork",
+    accent: "#F43F5E",
+    description: "The long game. A community-owned language specification, an independent compiler, and a self-governing RFC process — Visual Basic, freed from corporate indifference.",
+    milestones: [
+      { label: "OpenVB language specification (draft)",  done: false, active: false },
+      { label: "Independent compiler project kickoff",   done: false, active: false },
+      { label: "Community-governed RFC process",         done: false, active: false },
+      { label: "Runtime research & prototyping",         done: false, active: false },
+      { label: "OpenVB v0.1 — proof of concept",        done: false, active: false },
+      { label: "VB, owned by its users",                 done: false, active: false },
+    ],
+  },
+] as const;
+
+const phase1 = PHASES[0];
+const doneCount  = phase1.milestones.filter((m) => m.done).length;
+const totalCount = phase1.milestones.length;
+const pct = Math.round((doneCount / totalCount) * 100);
+---
+
+<Layout
+  title="Roadmap — OpenVB Foundation"
+  description="Three phases. One mission: a thriving, independent future for Visual Basic. See where OpenVB Foundation is today and where we're going."
+>
+  <div class="min-h-screen bg-[#07090F] text-slate-100 overflow-x-hidden">
+    <!-- Hero -->
+    <section class="relative pt-36 pb-20 px-6 lg:px-10">
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="background: linear-gradient(180deg, #0D1033 0%, #07090F 70%)"
+      ></div>
+      <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+      <div
+        class="absolute top-16 right-[15%] w-[500px] h-[500px] rounded-full pointer-events-none"
+        style="background: radial-gradient(circle, rgba(168,85,247,0.07) 0%, transparent 70%)"
+      ></div>
+
+      <div class="relative z-10 max-w-7xl mx-auto">
+        <h1 class="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
+          Where we're going
+        </h1>
+        <p class="text-lg text-slate-400 max-w-2xl leading-relaxed">
+          Three phases. One mission: a thriving, independent future for Visual Basic.
+          Here's what we're working on, what's coming next, and where we ultimately want to go.
+        </p>
+      </div>
+    </section>
+
+    <!-- Phase cards -->
+    <section class="py-8 pb-28 px-6 lg:px-10">
+      <div class="max-w-7xl mx-auto space-y-8">
+        {PHASES.map((phase, phaseIdx) => (
+          <div
+            class="rounded-2xl border border-white/[0.07] overflow-hidden"
+            style="background: rgba(255,255,255,0.015)"
+          >
+            <!-- Phase header -->
+            <div
+              class="flex flex-col md:flex-row md:items-center justify-between gap-4 px-8 py-6 border-b border-white/[0.06]"
+              style={`background: ${phase.accent}08`}
+            >
+              <div class="flex items-center gap-5">
+                <div
+                  class="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-black shrink-0"
+                  style={`background: ${phase.accent}20; border: 1px solid ${phase.accent}35; color: ${phase.accent}; font-variant-numeric: tabular-nums`}
+                >
+                  {phase.number}
+                </div>
+                <div>
+                  <div
+                    class="text-xs font-semibold uppercase tracking-widest mb-0.5"
+                    style={`color: ${phase.accent}`}
+                  >
+                    {phase.phase}
+                  </div>
+                  <h2 class="text-xl font-bold text-white">{phase.title}</h2>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase body -->
+            <div class="px-8 py-8 grid lg:grid-cols-[1fr_1.5fr] gap-10">
+              <div class="space-y-6">
+                <p class="text-slate-400 leading-relaxed">{phase.description}</p>
+
+                {phaseIdx === 0 && (
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between text-xs text-slate-500">
+                      <span>Phase 1 progress</span>
+                      <span class="font-mono" style={`color: ${phase.accent}`}>
+                        {doneCount}/{totalCount} milestones
+                      </span>
+                    </div>
+                    <div class="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                      <div
+                        class="h-full rounded-full transition-all duration-700"
+                        style={`width: ${pct}%; background: ${phase.accent}`}
+                      ></div>
+                    </div>
+                    <div class="text-xs text-slate-600">{pct}% complete</div>
+                  </div>
+                )}
+              </div>
+
+              <div class="space-y-2.5">
+                {phase.milestones.map((milestone) => (
+                  <div class="flex items-center gap-3 text-sm py-0.5">
+                    <CheckIcon done={milestone.done} active={milestone.active} />
+                    <span
+                      class={
+                        milestone.done
+                          ? "text-slate-500 line-through"
+                          : milestone.active
+                          ? "text-white font-medium"
+                          : "text-slate-400"
+                      }
+                    >
+                      {milestone.label}
+                    </span>
+                    {milestone.active && (
+                      <span
+                        class="text-xs px-1.5 py-0.5 rounded font-medium"
+                        style="background: rgba(0,180,216,0.12); color: #00B4D8"
+                      >
+                        in progress
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section
+      class="py-24 px-6 lg:px-10 border-t border-white/[0.05]"
+      style="background: linear-gradient(180deg, rgba(13,16,51,0.4) 0%, transparent 100%)"
+    >
+      <div class="max-w-3xl mx-auto text-center space-y-6">
+        <h2 class="text-3xl lg:text-4xl font-bold text-white">
+          Help us hit these milestones
+        </h2>
+        <p class="text-slate-400 leading-relaxed text-lg">
+          Every item on this roadmap moves faster with more contributors. Pick a project,
+          open an issue, or just introduce yourself in the community.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 pt-2">
+          <a
+            href="/projects"
+            class="btn-glow px-6 py-3 rounded-xl font-semibold text-white text-sm transition-all duration-300"
+            style="background: #00B4D8"
+          >
+            Browse Projects
+          </a>
+          <a
+            href="/community"
+            class="px-6 py-3 rounded-xl font-semibold text-slate-300 text-sm border border-white/10 hover:bg-white/[0.05] hover:border-white/20 transition-all duration-200"
+          >
+            Join the Community →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Layout>

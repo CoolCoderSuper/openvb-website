@@ -1,0 +1,45 @@
+---
+const FOOTER_LINKS = [
+  { label: 'GitHub',  href: 'https://github.com/OpenVBdotnet/', external: true  },
+  { label: 'Discord', href: '#',                                external: false },
+  { label: 'Twitter', href: '#',                                external: false },
+  { label: 'License', href: '#',                                external: false },
+];
+---
+
+<footer class="border-t border-white/[0.05] px-6 lg:px-10 py-12">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-2.5">
+      <div
+        class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white"
+        style="background: #00B4D8"
+      >
+        VB
+      </div>
+      <span class="font-semibold text-white">OpenVB Foundation</span>
+    </div>
+
+    <p class="text-sm text-slate-600">
+      &copy; 2026 OpenVB Foundation. Building the future of Visual Basic.
+    </p>
+
+    <div class="flex items-center gap-6 text-sm text-slate-500">
+      {FOOTER_LINKS.map((link) =>
+        link.external ? (
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-white transition-colors"
+          >
+            {link.label}
+          </a>
+        ) : (
+          <a href={link.href} class="hover:text-white transition-colors">
+            {link.label}
+          </a>
+        )
+      )}
+    </div>
+  </div>
+</footer>
