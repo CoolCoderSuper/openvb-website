@@ -56,14 +56,18 @@ const STATUS_STYLE = {
     <section class="pt-24 lg:pt-28 pb-16 px-6 lg:px-8">
       <div class="max-w-6xl mx-auto">
         <h1 class="rise font-serif text-5xl lg:text-6xl font-medium tracking-tight text-ink">
-          What we're building
+          What we're <em class="text-vb-blue">building.</em>
         </h1>
+        <p class="rise rise-1 text-lg text-ink-soft max-w-2xl leading-relaxed mt-7">
+          Tooling, templates, and the groundwork for an independent compiler —
+          every repository public, every project accepting pull requests.
+        </p>
       </div>
     </section>
 
     <!-- Projects -->
     <section class="pb-24 px-6 lg:px-8">
-      <div class="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="rise rise-2 max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {PROJECTS.map((project) => {
           const style = STATUS_STYLE[project.status];
           return (

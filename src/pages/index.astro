@@ -173,19 +173,19 @@ const roadmapPhases = [
     </section>
 
     <!-- INDEPENDENCE MANIFESTO -->
-    <section class="py-24 lg:py-32 px-6 lg:px-8" style="background: var(--ink)">
+    <section class="py-24 lg:py-32 px-6 lg:px-8 bg-ink">
       <div class="max-w-4xl mx-auto">
         <h2 class="font-serif text-4xl lg:text-6xl font-medium tracking-tight leading-[1.1] text-paper">
-          If Microsoft won't take VB forward, <em style="color: #93A8EE">we will.</em>
+          If Microsoft won't take VB forward, <em class="text-vb-blue-soft">we will.</em>
         </h2>
 
         <div class="grid md:grid-cols-2 gap-8 mt-10">
-          <p class="leading-relaxed" style="color: rgba(244,241,232,0.75)">
+          <p class="leading-relaxed text-paper/75">
             New language features arrive in C# first — or never reach VB at all.
             We think a language carrying three decades of working software
             deserves better than maintenance mode.
           </p>
-          <p class="leading-relaxed" style="color: rgba(244,241,232,0.75)">
+          <p class="leading-relaxed text-paper/75">
             So we're preparing for the long game: an independent specification,
             an open compiler, and governance that belongs to the people who
             actually write VB.
@@ -194,8 +194,7 @@ const roadmapPhases = [
 
         <a
           href="/roadmap"
-          class="inline-block font-mono text-[13px] mt-10 underline underline-offset-4 decoration-1 transition-colors"
-          style="color: #93A8EE"
+          class="inline-block font-mono text-[13px] mt-10 underline underline-offset-4 decoration-1 transition-colors text-vb-blue-soft hover:text-paper"
         >
           Read the plan →
         </a>
@@ -212,7 +211,7 @@ const roadmapPhases = [
         <div class="grid md:grid-cols-3 border-t border-ink divide-y md:divide-y-0 md:divide-x divide-rule">
           {roadmapPhases.map((phase) => (
             <div class="py-8 md:px-8 first:md:pl-0 last:md:pr-0 flex flex-col gap-5">
-              <span class="font-serif text-6xl font-medium text-rule" style="-webkit-text-stroke: 1px var(--ink-faint)">
+              <span class="num-ghost font-serif text-6xl font-medium">
                 {phase.number}
               </span>
               <div>

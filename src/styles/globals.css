@@ -21,8 +21,9 @@
   --rule: #D9D3C3;
   --rule-strong: #1D1B16;
 
-  /* The one accent: VB royal blue */
+  /* The one accent: VB royal blue (soft variant for dark grounds) */
   --vb-blue: #16339E;
+  --vb-blue-soft: #93A8EE;
 
   /* Sparse semantic colors (a nod to the classic VB editor palette) */
   --vb-green: #007A00;
@@ -45,6 +46,7 @@
   --color-ink-faint: var(--ink-faint);
   --color-rule: var(--rule);
   --color-vb-blue: var(--vb-blue);
+  --color-vb-blue-soft: var(--vb-blue-soft);
   --color-vb-green: var(--vb-green);
   --color-vb-maroon: var(--vb-maroon);
   --font-sans: var(--font-plex-sans);
@@ -187,6 +189,12 @@ body::before {
 }
 .link-plain:hover {
   text-decoration-color: var(--vb-blue);
+}
+
+/* ── Ghost numerals: outlined phase numbers ── */
+.num-ghost {
+  color: var(--rule);
+  -webkit-text-stroke: 1px var(--ink-faint);
 }
 
 /* ── Cursor blink (terminal) ── */

@@ -68,14 +68,18 @@ const filledSegments = Math.round((pct / 100) * SEGMENTS);
     <section class="pt-24 lg:pt-28 pb-16 px-6 lg:px-8">
       <div class="max-w-6xl mx-auto">
         <h1 class="rise font-serif text-5xl lg:text-6xl font-medium tracking-tight text-ink">
-          Where we're going
+          Where we're <em class="text-vb-blue">going.</em>
         </h1>
+        <p class="rise rise-1 text-lg text-ink-soft max-w-2xl leading-relaxed mt-7">
+          Three phases: build the community, evolve the language, and — if it
+          comes to that — take Visual Basic forward ourselves.
+        </p>
       </div>
     </section>
 
     <!-- Phases -->
     <section class="pb-28 px-6 lg:px-8">
-      <div class="max-w-6xl mx-auto">
+      <div class="rise rise-2 max-w-6xl mx-auto">
         {PHASES.map((phase, phaseIdx) => {
           const isCurrent = phaseIdx === 0;
           return (
@@ -88,7 +92,7 @@ const filledSegments = Math.round((pct / 100) * SEGMENTS);
                       {phase.number}
                     </span>
                   ) : (
-                    <span class="font-serif text-7xl font-medium leading-none text-rule" style="-webkit-text-stroke: 1px var(--ink-faint)">
+                    <span class="num-ghost font-serif text-7xl font-medium leading-none">
                       {phase.number}
                     </span>
                   )}
