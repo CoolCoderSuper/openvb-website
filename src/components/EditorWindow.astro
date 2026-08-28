@@ -315,7 +315,7 @@ const uid = `ew-${Math.random().toString(36).slice(2, 9)}`;
         <div class="text-ink-faint select-none pr-5 text-right shrink-0 leading-6" style="min-width: 2ch">
           {lineNums.map((n) => <div>{n}</div>)}
         </div>
-        <pre id={uid} class="vb-code min-w-0" set:html={rendered} />
+        <pre id={uid} class="vb-code min-w-0" set:html={rendered}></pre>
       </>
     ) : (
       <slot />

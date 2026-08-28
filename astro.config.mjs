@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
+  site: 'https://openvb.net',
   integrations: [
     starlight({
       title: 'OpenVB Docs',
