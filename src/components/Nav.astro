@@ -37,11 +37,47 @@ const NAV_LINKS = [
       })}
     </div>
 
-    <a
-      href="/docs"
-      class="hidden md:inline-flex font-mono text-[12px] uppercase tracking-[0.1em] px-4 py-2 border border-ink text-ink hover:bg-ink hover:text-paper transition-colors duration-150"
-    >
-      Get Started
-    </a>
+    <div class="flex items-center gap-4">
+      <button
+        id="theme-toggle"
+        type="button"
+        aria-label="Switch to dark mode"
+        class="inline-flex items-center justify-center w-8 h-8 border border-rule text-ink-soft hover:text-ink hover:border-ink transition-colors duration-150 cursor-pointer"
+      >
+        <!-- moon (shown in light mode) -->
+        <svg class="w-4 h-4 dark:hidden" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
+        </svg>
+        <!-- sun (shown in dark mode) -->
+        <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.3" />
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6L13 13M13 3l-1.4 1.4M4.4 11.6L3 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="square" />
+        </svg>
+      </button>
+
+      <a
+        href="/docs"
+        class="hidden md:inline-flex font-mono text-[12px] uppercase tracking-[0.1em] px-4 py-2 border border-ink text-ink hover:bg-ink hover:text-paper transition-colors duration-150"
+      >
+        Get Started
+      </a>
+    </div>
   </div>
 </nav>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+
+  function syncLabel() {
+    const dark = document.documentElement.classList.contains('dark');
+    toggle?.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+
+  toggle?.addEventListener('click', () => {
+    const dark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('starlight-theme', dark ? 'dark' : 'light');
+    syncLabel();
+  });
+
+  syncLabel();
+</script>

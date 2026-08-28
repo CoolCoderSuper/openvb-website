@@ -11,7 +11,12 @@
 @import "@fontsource/ibm-plex-mono/500.css";
 @import "@fontsource/ibm-plex-mono/600.css";
 
+/* Class-based dark mode (toggled on <html> by the nav switch) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  color-scheme: light;
+
   /* Paper & ink */
   --paper: #F4F1E8;
   --paper-raised: #FBFAF5;
@@ -33,9 +38,72 @@
   --term-bg: #191813;
   --term-fg: #D6D2C4;
 
+  /* Hard offset shadows */
+  --shadow-soft: rgba(29, 27, 22, 0.18);
+  --shadow-frame: rgba(29, 27, 22, 0.12);
+  --link-underline: rgba(22, 51, 158, 0.35);
+
+  /* Buttons */
+  --btn-primary-bg: var(--vb-blue);
+  --btn-primary-border: var(--vb-blue);
+  --btn-primary-fg: var(--paper-raised);
+  --btn-shadow: var(--ink);
+
+  /* Code editor (VB6-era colors on a white page) */
+  --code-bg: #FFFFFF;
+  --code-keyword: #0000C0;
+  --code-type: #2B91AF;
+  --code-func: #795E26;
+  --code-ident: #1D1B16;
+  --code-string: #A31515;
+  --code-number: #098658;
+  --code-comment: #007A00;
+
   --font-plex-sans: 'IBM Plex Sans Variable', 'IBM Plex Sans', sans-serif;
   --font-plex-serif: 'IBM Plex Serif', Georgia, serif;
   --font-plex-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+/* Dark: same paper-and-ink logic, lights out */
+html.dark {
+  color-scheme: dark;
+
+  --paper: #191813;
+  --paper-raised: #22201A;
+  --ink: #F4EFE1;
+  --ink-soft: #C6C0AE;
+  --ink-faint: #948E7D;
+  --rule: #3D392C;
+  --rule-strong: #F4EFE1;
+
+  /* Blue variants swap: soft reads on dark paper, deep reads on inverted bands */
+  --vb-blue: #93A8EE;
+  --vb-blue-soft: #16339E;
+
+  --vb-green: #55B855;
+  --vb-maroon: #D98080;
+
+  --term-bg: #111009;
+
+  --shadow-soft: rgba(0, 0, 0, 0.45);
+  --shadow-frame: rgba(0, 0, 0, 0.4);
+  --link-underline: rgba(147, 168, 238, 0.4);
+
+  /* Buttons: keep the royal blue (brightened for dark paper), black offset */
+  --btn-primary-bg: #2B4BC8;
+  --btn-primary-border: #4D69D8;
+  --btn-primary-fg: #FFFFFF;
+  --btn-shadow: #000000;
+
+  /* Code editor (classic VS dark palette) */
+  --code-bg: #14130E;
+  --code-keyword: #569CD6;
+  --code-type: #4EC9B0;
+  --code-func: #DCDCAA;
+  --code-ident: #D6D2C4;
+  --code-string: #CE9178;
+  --code-number: #B5CEA8;
+  --code-comment: #6A9955;
 }
 
 @theme inline {
@@ -49,6 +117,7 @@
   --color-vb-blue-soft: var(--vb-blue-soft);
   --color-vb-green: var(--vb-green);
   --color-vb-maroon: var(--vb-maroon);
+  --color-code-bg: var(--code-bg);
   --font-sans: var(--font-plex-sans);
   --font-serif: var(--font-plex-serif);
   --font-mono: var(--font-plex-mono);
@@ -72,6 +141,12 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* Invert the (black) grain so it stays visible on dark paper */
+html.dark body::before {
+  filter: invert(1);
+  opacity: 0.22;
+}
+
 /* ── Buttons: rectangular, hard offset shadow (print/retro tactility) ── */
 .btn-primary,
 .btn-secondary {
@@ -87,39 +162,39 @@ body::before {
   transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
 }
 .btn-primary {
-  background: var(--vb-blue);
-  border-color: var(--vb-blue);
-  color: var(--paper-raised);
-  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-border);
+  color: var(--btn-primary-fg);
+  box-shadow: 3px 3px 0 var(--btn-shadow);
 }
 .btn-primary:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 var(--ink);
+  box-shadow: 4px 4px 0 var(--btn-shadow);
 }
 .btn-primary:active {
   transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 var(--ink);
+  box-shadow: 1px 1px 0 var(--btn-shadow);
 }
 .btn-secondary {
   background: transparent;
   color: var(--ink);
-  box-shadow: 3px 3px 0 rgba(29, 27, 22, 0.18);
+  box-shadow: 3px 3px 0 var(--shadow-soft);
 }
 .btn-secondary:hover {
   background: var(--paper-raised);
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 rgba(29, 27, 22, 0.18);
+  box-shadow: 4px 4px 0 var(--shadow-soft);
 }
 .btn-secondary:active {
   transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 rgba(29, 27, 22, 0.18);
+  box-shadow: 1px 1px 0 var(--shadow-soft);
 }
 
 /* ── Editor / terminal frame: clean, platform-neutral ── */
 .frame {
   background: var(--paper-raised);
   border: 1px solid var(--ink);
-  box-shadow: 6px 6px 0 rgba(29, 27, 22, 0.12);
+  box-shadow: 6px 6px 0 var(--shadow-frame);
 }
 .frame-header {
   display: flex;
@@ -159,7 +234,7 @@ body::before {
 }
 .frame-link:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 8px 8px 0 rgba(29, 27, 22, 0.14);
+  box-shadow: 8px 8px 0 var(--shadow-frame);
 }
 .frame-dark {
   background: var(--term-bg);
@@ -184,7 +259,7 @@ body::before {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
-  text-decoration-color: rgba(22, 51, 158, 0.35);
+  text-decoration-color: var(--link-underline);
   transition: text-decoration-color 150ms ease;
 }
 .link-plain:hover {
@@ -242,5 +317,5 @@ body::before {
 /* ── Text selection ── */
 ::selection {
   background: var(--vb-blue);
-  color: #fff;
+  color: var(--paper-raised);
 }

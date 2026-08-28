@@ -39,15 +39,15 @@ const TYPE_CTX = new Set([
 // After these keywords, the next bare identifier is a callable name
 const FUNC_CTX = new Set(['Sub', 'Function']);
 
-// VB6-era editor colors on a white page
+// Theme-aware editor colors (light: VB6-era VS palette, dark: classic VS dark)
 const C = {
-  keyword: '#0000C0',
-  type: '#2B91AF',
-  func: '#795E26',
-  ident: '#1D1B16',
-  string: '#A31515',
-  number: '#098658',
-  comment: '#007A00',
+  keyword: 'var(--code-keyword)',
+  type: 'var(--code-type)',
+  func: 'var(--code-func)',
+  ident: 'var(--code-ident)',
+  string: 'var(--code-string)',
+  number: 'var(--code-number)',
+  comment: 'var(--code-comment)',
 };
 
 function esc(s: string) {
@@ -309,7 +309,7 @@ const uid = `ew-${Math.random().toString(36).slice(2, 9)}`;
   </div>
 
   <!-- Code area -->
-  <div class="flex text-[13px] font-mono bg-white text-ink px-5 py-5 overflow-x-auto">
+  <div class="flex text-[13px] font-mono bg-code-bg text-ink px-5 py-5 overflow-x-auto">
     {code ? (
       <>
         <div class="text-ink-faint select-none pr-5 text-right shrink-0 leading-6" style="min-width: 2ch">
