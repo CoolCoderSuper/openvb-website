@@ -209,9 +209,9 @@ const roadmapPhases = [
         </h2>
 
         <div class="grid md:grid-cols-3 border-t border-ink divide-y md:divide-y-0 md:divide-x divide-rule">
-          {roadmapPhases.map((phase) => (
+          {roadmapPhases.map((phase, i) => (
             <div class="py-8 md:px-8 first:md:pl-0 last:md:pr-0 flex flex-col gap-5">
-              <span class="num-ghost font-serif text-6xl font-medium">
+              <span class={`font-serif text-6xl font-medium ${i === 0 ? "text-ink" : "num-ghost"}`}>
                 {phase.number}
               </span>
               <div>

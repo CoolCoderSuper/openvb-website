@@ -266,10 +266,9 @@ html.dark body::before {
   text-decoration-color: var(--vb-blue);
 }
 
-/* ── Ghost numerals: outlined phase numbers ── */
+/* ── Ghost numerals: quiet solid phase numbers ── */
 .num-ghost {
-  color: var(--rule);
-  -webkit-text-stroke: 1px var(--ink-faint);
+  color: color-mix(in srgb, var(--ink) 50%, var(--paper));
 }
 
 /* ── Cursor blink (terminal) ── */
