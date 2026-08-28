@@ -58,13 +58,13 @@ function sp(color: string, text: string) {
   return `<span style="color:${color}">${esc(text)}</span>`;
 }
 
-function tokenizeLine(line: string): string {
+function tokenize(src: string): string {
   let out = '';
   let i   = 0;
   let prev = ''; // most recent keyword token
 
-  while (i < line.length) {
-    const ch = line[i];
+  while (i < src.length) {
+    const ch = src[i];
 
     // Whitespace — pass through, preserve prev
     if (ch === ' ' || ch === '\t') {
@@ -75,24 +75,24 @@ function tokenizeLine(line: string): string {
 
     // Comment — rest of line
     if (ch === "'") {
-      out += sp(C.comment, line.slice(i));
+      out += sp(C.comment, src.slice(i));
       break;
     }
 
-    // String literal — plain " or interpolated $"
-    if (ch === '"' || (ch === '$' && line[i + 1] === '"')) {
-      const start = i;
-      if (ch === '$') i++;
-      i++; // opening "
-      while (i < line.length) {
-        if (line[i] === '"') {
-          i++;
-          if (line[i] === '"') { i++; continue; } // doubled-quote escape
-          break;
-        }
-        i++;
-      }
-      out += sp(C.string, line.slice(start, i));
+    // Interpolated string: $"...{expr}..."
+    if (ch === '$' && src[i + 1] === '"') {
+      const [html, next] = readInterpString(src, i);
+      out += html;
+      i = next;
+      prev = '';
+      continue;
+    }
+
+    // Plain string literal
+    if (ch === '"') {
+      const [html, next] = readPlainString(src, i);
+      out += html;
+      i = next;
       prev = '';
       continue;
     }
@@ -100,8 +100,8 @@ function tokenizeLine(line: string): string {
     // Numeric literal
     if (/[0-9]/.test(ch)) {
       const start = i;
-      while (i < line.length && /[0-9._]/.test(line[i])) i++;
-      out += sp(C.number, line.slice(start, i));
+      while (i < src.length && /[0-9._]/.test(src[i])) i++;
+      out += sp(C.number, src.slice(start, i));
       prev = '';
       continue;
     }
@@ -109,8 +109,8 @@ function tokenizeLine(line: string): string {
     // Identifier / keyword
     if (/[a-zA-Z_]/.test(ch)) {
       const start = i;
-      while (i < line.length && /[a-zA-Z0-9_]/.test(line[i])) i++;
-      const word = line.slice(start, i);
+      while (i < src.length && /[a-zA-Z0-9_]/.test(src[i])) i++;
+      const word = src.slice(start, i);
 
       if (KEYWORDS.has(word)) {
         out += sp(C.keyword, word);
@@ -128,7 +128,7 @@ function tokenizeLine(line: string): string {
         prev = '';
       } else {
         // method call if immediately followed by "("
-        const ahead = line.slice(i).trimStart();
+        const ahead = src.slice(i).trimStart();
         out += ahead.startsWith('(')
           ? sp(C.func, word)
           : sp(C.ident, word);
@@ -143,7 +143,135 @@ function tokenizeLine(line: string): string {
     i++;
   }
 
-  return out || '&nbsp;';
+  return out;
+}
+
+function readPlainString(src: string, i: number): [string, number] {
+  const start = i;
+  i++; // opening "
+  while (i < src.length) {
+    if (src[i] === '"') {
+      i++;
+      if (src[i] === '"') { i++; continue; } // doubled-quote escape
+      break;
+    }
+    i++;
+  }
+  return [sp(C.string, src.slice(start, i)), i];
+}
+
+function readInterpString(src: string, i: number): [string, number] {
+  let out = sp(C.string, '$"');
+  i += 2; // skip $"
+  let buf = '';
+
+  const flush = () => {
+    if (buf) {
+      out += sp(C.string, buf);
+      buf = '';
+    }
+  };
+
+  while (i < src.length) {
+    const ch = src[i];
+
+    if (ch === '"') {
+      if (src[i + 1] === '"') {
+        buf += '""';
+        i += 2;
+        continue;
+      }
+      flush();
+      out += sp(C.string, '"');
+      i++;
+      break;
+    }
+
+    if (ch === '{') {
+      if (src[i + 1] === '{') {
+        buf += '{{';
+        i += 2;
+        continue;
+      }
+      flush();
+      out += esc('{');
+      i++;
+      const [hole, next] = readInterpHole(src, i);
+      out += hole;
+      i = next;
+      continue;
+    }
+
+    if (ch === '}' && src[i + 1] === '}') {
+      buf += '}}';
+      i += 2;
+      continue;
+    }
+
+    buf += ch;
+    i++;
+  }
+
+  flush();
+  return [out, i];
+}
+
+function readInterpHole(src: string, i: number): [string, number] {
+  const start = i;
+  let formatAt = -1;
+  let depth = 0;
+  let parens = 0;
+  let inStr = false;
+  let phase: 'code' | 'format' = 'code';
+
+  while (i < src.length) {
+    const ch = src[i];
+
+    if (phase === 'format') {
+      if (ch === '}' && src[i + 1] === '}') { i += 2; continue; }
+      if (ch === '}') break;
+      i++;
+      continue;
+    }
+
+    if (inStr) {
+      if (ch === '"') {
+        if (src[i + 1] === '"') { i += 2; continue; }
+        inStr = false;
+      }
+      i++;
+      continue;
+    }
+
+    if (ch === '"') { inStr = true; i++; continue; }
+    if (ch === '(') { parens++; i++; continue; }
+    if (ch === ')') { parens--; i++; continue; }
+    if (ch === '{') { depth++; i++; continue; }
+    if (ch === '}' && depth > 0) { depth--; i++; continue; }
+    if (ch === '}' && depth === 0) break;
+
+    if (ch === ':' && depth === 0 && parens <= 0) {
+      formatAt = i;
+      phase = 'format';
+      i++;
+      continue;
+    }
+
+    i++;
+  }
+
+  const codeEnd = formatAt >= 0 ? formatAt : i;
+  let html = tokenize(src.slice(start, codeEnd));
+  if (formatAt >= 0) html += sp(C.string, src.slice(formatAt, i));
+  if (src[i] === '}') {
+    html += esc('}');
+    i++;
+  }
+  return [html, i];
+}
+
+function tokenizeLine(line: string): string {
+  return tokenize(line) || '&nbsp;';
 }
 
 function highlight(raw: string): string {
