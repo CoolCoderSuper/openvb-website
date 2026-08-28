@@ -23,7 +23,7 @@ const { title, description, keywords } = Astro.props;
     {keywords && <meta name="keywords" content={keywords.join(', ')} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body class="min-h-full flex flex-col bg-[#07090F] text-slate-100">
+  <body class="min-h-full flex flex-col bg-paper text-ink">
     <Nav />
     <slot />
     <Footer />

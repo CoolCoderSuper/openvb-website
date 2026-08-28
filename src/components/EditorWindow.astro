@@ -1,14 +1,12 @@
 ---
 interface Props {
   filename: string;
-  gradientFrom: string;
-  gradientTo: string;
   code?: string;
 }
 
-const { filename, gradientFrom, gradientTo, code } = Astro.props;
+const { filename, code } = Astro.props;
 
-// ── VB.NET syntax highlighter ────────────────────────────────────────────────
+// ── VB.NET syntax highlighter (classic VB6 / VS light palette) ──────────────
 
 const KEYWORDS = new Set([
   'Module', 'End', 'Sub', 'Function', 'Class', 'Property',
@@ -22,10 +20,10 @@ const KEYWORDS = new Set([
   'Continue', 'Do', 'Loop', 'While', 'Until', 'Await', 'Async', 'Handles',
   'AddressOf', 'GetType', 'TypeOf', 'ByVal', 'ByRef', 'Optional',
   'ParamArray', 'Overrides', 'Overridable', 'MustOverride', 'Shadows',
-  'Overloads', 'True', 'False', 'Nothing',
+  'Overloads', 'True', 'False', 'Nothing', 'Of',
 ]);
 
-// Built-in type names → teal
+// Built-in type names
 const BUILTIN_TYPES = new Set([
   'String', 'Integer', 'Long', 'Short', 'Byte', 'SByte',
   'UInteger', 'ULong', 'UShort', 'Single', 'Double', 'Decimal',
@@ -35,11 +33,22 @@ const BUILTIN_TYPES = new Set([
 // After these keywords, the next bare identifier is a type name
 const TYPE_CTX = new Set([
   'As', 'New', 'Class', 'Inherits', 'Implements',
-  'Structure', 'Enum', 'Interface', 'Module', 'Imports',
+  'Structure', 'Enum', 'Interface', 'Module', 'Imports', 'Of',
 ]);
 
 // After these keywords, the next bare identifier is a callable name
 const FUNC_CTX = new Set(['Sub', 'Function']);
+
+// VB6-era editor colors on a white page
+const C = {
+  keyword: '#0000C0',
+  type: '#2B91AF',
+  func: '#795E26',
+  ident: '#1D1B16',
+  string: '#A31515',
+  number: '#098658',
+  comment: '#007A00',
+};
 
 function esc(s: string) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -66,7 +75,7 @@ function tokenizeLine(line: string): string {
 
     // Comment — rest of line
     if (ch === "'") {
-      out += sp('#6A9955', line.slice(i));
+      out += sp(C.comment, line.slice(i));
       break;
     }
 
@@ -83,7 +92,7 @@ function tokenizeLine(line: string): string {
         }
         i++;
       }
-      out += sp('#CE9178', line.slice(start, i));
+      out += sp(C.string, line.slice(start, i));
       prev = '';
       continue;
     }
@@ -92,7 +101,7 @@ function tokenizeLine(line: string): string {
     if (/[0-9]/.test(ch)) {
       const start = i;
       while (i < line.length && /[0-9._]/.test(line[i])) i++;
-      out += sp('#B5CEA8', line.slice(start, i));
+      out += sp(C.number, line.slice(start, i));
       prev = '';
       continue;
     }
@@ -104,25 +113,25 @@ function tokenizeLine(line: string): string {
       const word = line.slice(start, i);
 
       if (KEYWORDS.has(word)) {
-        out += sp('#569CD6', word);
+        out += sp(C.keyword, word);
         prev = word;
       } else if (BUILTIN_TYPES.has(word)) {
-        out += sp('#4EC9B0', word);
+        out += sp(C.type, word);
         prev = '';
       } else if (TYPE_CTX.has(prev)) {
         // e.g. "As Developer", "Class HelloWorld", "New List"
-        out += sp('#4EC9B0', word);
+        out += sp(C.type, word);
         prev = '';
       } else if (FUNC_CTX.has(prev)) {
         // e.g. "Sub Main", "Function Greet"
-        out += sp('#DCDCAA', word);
+        out += sp(C.func, word);
         prev = '';
       } else {
         // method call if immediately followed by "("
         const ahead = line.slice(i).trimStart();
         out += ahead.startsWith('(')
-          ? sp('#DCDCAA', word)
-          : sp('#9CDCFE', word);
+          ? sp(C.func, word)
+          : sp(C.ident, word);
         prev = '';
       }
       continue;
@@ -153,53 +162,45 @@ const rendered = code ? highlight(code) : null;
 const uid = `ew-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
-<div class="relative">
-  <div
-    class="absolute -inset-px rounded-2xl blur-sm"
-    style={`background: linear-gradient(135deg, ${gradientFrom}, ${gradientTo})`}
-  ></div>
-  <div class="relative bg-[#0E1117] rounded-2xl border border-white/[0.07] overflow-hidden shadow-2xl">
-    <!-- Title bar -->
-    <div class="flex items-center gap-1.5 px-4 py-3 border-b border-white/[0.06] bg-[#161B27]">
-      <div class="w-3 h-3 rounded-full bg-[#FF5F57]"></div>
-      <div class="w-3 h-3 rounded-full bg-[#FEBC2E]"></div>
-      <div class="w-3 h-3 rounded-full bg-[#28C840]"></div>
-      <span class="ml-4 text-xs text-slate-500 font-mono">{filename}</span>
-      {code && (
-        <button
-          data-copy-target={uid}
-          class="ml-auto flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-100 transition-colors px-2 py-1 rounded hover:bg-white/10 cursor-pointer"
-          aria-label="Copy code to clipboard"
-        >
-          <svg data-copy-icon xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
-            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
-          </svg>
-          <svg data-check-icon xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="hidden text-green-400">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-          <span data-copy-label>Copy</span>
-        </button>
-      )}
-    </div>
-    <!-- Code area -->
-    <div class="flex text-sm font-mono p-6 overflow-x-auto">
-      {code ? (
-        <>
-          <div class="text-slate-600 select-none pr-5 text-right shrink-0 leading-7" style="min-width: 2ch">
-            {lineNums.map((n) => <div>{n}</div>)}
-          </div>
-          <pre id={uid} class="vb-code min-w-0" set:html={rendered} />
-        </>
-      ) : (
-        <slot />
-      )}
-    </div>
-    <!-- Status bar -->
-    <div class="flex items-center gap-4 px-4 py-1.5 bg-[#0D7EC0] text-xs text-white/90">
-      <span>VB.NET</span>
-      <span class="opacity-60">UTF-8</span>
-    </div>
+<div class="frame">
+  <!-- Tab bar -->
+  <div class="frame-header">
+    <span class="frame-tab">
+      <span class="w-2 h-2 bg-vb-blue shrink-0" aria-hidden="true"></span>
+      {filename}
+    </span>
+    {code && (
+      <button
+        data-copy-target={uid}
+        class="ml-auto mr-3 my-auto cursor-pointer uppercase tracking-[0.1em] text-[11px] text-ink-faint hover:text-vb-blue transition-colors"
+        aria-label="Copy code to clipboard"
+      >
+        <span data-copy-label>Copy</span>
+      </button>
+    )}
+  </div>
+
+  <!-- Code area -->
+  <div class="flex text-[13px] font-mono bg-white text-ink px-5 py-5 overflow-x-auto">
+    {code ? (
+      <>
+        <div class="text-ink-faint select-none pr-5 text-right shrink-0 leading-6" style="min-width: 2ch">
+          {lineNums.map((n) => <div>{n}</div>)}
+        </div>
+        <pre id={uid} class="vb-code min-w-0" set:html={rendered} />
+      </>
+    ) : (
+      <slot />
+    )}
+  </div>
+
+  <!-- Status line -->
+  <div class="frame-status">
+    <span>VB.NET</span>
+    <span>UTF-8</span>
+    <span class="hidden sm:inline">LF</span>
+    <span class="flex-1"></span>
+    <span class="hidden sm:inline text-vb-green">✓ builds everywhere</span>
   </div>
 </div>
 
@@ -212,20 +213,11 @@ const uid = `ew-${Math.random().toString(36).slice(2, 9)}`;
 
       await navigator.clipboard.writeText(pre.textContent ?? '');
 
-      const copyIcon  = btn.querySelector<SVGElement>('[data-copy-icon]')!;
-      const checkIcon = btn.querySelector<SVGElement>('[data-check-icon]')!;
-      const label     = btn.querySelector<HTMLSpanElement>('[data-copy-label]')!;
-
-      copyIcon.classList.add('hidden');
-      checkIcon.classList.remove('hidden');
-      label.textContent = 'Copied!';
-      btn.classList.add('text-green-400');
+      const label = btn.querySelector<HTMLSpanElement>('[data-copy-label]')!;
+      label.textContent = 'Copied';
 
       setTimeout(() => {
-        copyIcon.classList.remove('hidden');
-        checkIcon.classList.add('hidden');
         label.textContent = 'Copy';
-        btn.classList.remove('text-green-400');
       }, 2000);
     });
   });
@@ -238,6 +230,6 @@ const uid = `ew-${Math.random().toString(36).slice(2, 9)}`;
     margin: 0;
     font-family: inherit;
     font-size: inherit;
-    line-height: 1.75rem;
+    line-height: 1.5rem;
   }
 </style>

@@ -10,52 +10,38 @@ const NAV_LINKS = [
 ];
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 lg:px-10 py-4 border-b border-white/[0.05] bg-[#07090F]/80 backdrop-blur-xl">
-  <a href="/" class="flex items-center gap-2.5">
-    <div
-      class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white"
-      style="background: #00B4D8"
-    >
-      VB
-    </div>
-    <span class="font-semibold text-white text-lg tracking-tight">OpenVB</span>
-  </a>
+<nav class="fixed top-0 left-0 right-0 z-50 border-b border-rule bg-paper/90 backdrop-blur-sm">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16">
+    <a href="/" class="flex items-center gap-3">
+      <img src="/vb-logo.png" alt="" width="30" height="30" class="shrink-0" />
+      <span class="font-serif font-semibold text-ink text-lg tracking-tight">OpenVB</span>
+    </a>
 
-  <div class="hidden md:flex items-center gap-8 text-sm text-slate-400">
-    {NAV_LINKS.map((link) => {
-      const isActive = !link.external && link.href !== '#' && pathname.startsWith(link.href);
-      if (link.external) {
+    <div class="hidden md:flex items-center gap-7">
+      {NAV_LINKS.map((link) => {
+        const isActive = !link.external && pathname.startsWith(link.href);
         return (
           <a
             href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="relative group py-1 transition-colors hover:text-white"
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener noreferrer' : undefined}
+            class={`font-mono text-[12px] uppercase tracking-[0.12em] transition-colors ${
+              isActive
+                ? 'text-vb-blue underline underline-offset-[6px] decoration-1'
+                : 'text-ink-soft hover:text-ink'
+            }`}
           >
             {link.label}
-            <span class="absolute bottom-0 left-0 h-px w-0 bg-[#00B4D8] transition-all duration-300 group-hover:w-full"></span>
           </a>
         );
-      }
-      return (
-        <a
-          href={link.href}
-          class={`relative group py-1 transition-colors hover:text-white ${isActive ? 'text-white' : ''}`}
-        >
-          {link.label}
-          <span
-            class="absolute bottom-0 left-0 h-px bg-[#00B4D8] transition-all duration-300 group-hover:w-full"
-            style={`width: ${isActive ? '100%' : '0%'}`}
-          ></span>
-        </a>
-      );
-    })}
-  </div>
+      })}
+    </div>
 
-  <a
-    href="/docs"
-    class="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] hover:border-white/20 transition-all duration-200"
-  >
-    Get Started
-  </a>
+    <a
+      href="/docs"
+      class="hidden md:inline-flex font-mono text-[12px] uppercase tracking-[0.1em] px-4 py-2 border border-ink text-ink hover:bg-ink hover:text-paper transition-colors duration-150"
+    >
+      Get Started
+    </a>
+  </div>
 </nav>

@@ -1,94 +1,238 @@
 @import "tailwindcss";
-@import "@fontsource-variable/geist/index.css";
-@import "@fontsource-variable/geist-mono/index.css";
+
+/* IBM Plex — sans for UI, serif for display, mono for code */
+@import "@fontsource-variable/ibm-plex-sans/index.css";
+@import "@fontsource/ibm-plex-serif/400.css";
+@import "@fontsource/ibm-plex-serif/400-italic.css";
+@import "@fontsource/ibm-plex-serif/500.css";
+@import "@fontsource/ibm-plex-serif/600.css";
+@import "@fontsource/ibm-plex-serif/600-italic.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/ibm-plex-mono/600.css";
 
 :root {
-  --background: #07090F;
-  --foreground: #F1F5F9;
-  --font-geist-sans: 'Geist Variable', 'Geist', sans-serif;
-  --font-geist-mono: 'Geist Mono Variable', 'Geist Mono', monospace;
+  /* Paper & ink */
+  --paper: #F4F1E8;
+  --paper-raised: #FBFAF5;
+  --ink: #1D1B16;
+  --ink-soft: #55524A;
+  --ink-faint: #8B867A;
+  --rule: #D9D3C3;
+  --rule-strong: #1D1B16;
+
+  /* The one accent: VB royal blue */
+  --vb-blue: #16339E;
+
+  /* Sparse semantic colors (a nod to the classic VB editor palette) */
+  --vb-green: #007A00;
+  --vb-maroon: #A31515;
+
+  /* Terminal */
+  --term-bg: #191813;
+  --term-fg: #D6D2C4;
+
+  --font-plex-sans: 'IBM Plex Sans Variable', 'IBM Plex Sans', sans-serif;
+  --font-plex-serif: 'IBM Plex Serif', Georgia, serif;
+  --font-plex-mono: 'IBM Plex Mono', 'Courier New', monospace;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-vb-blue: var(--vb-blue);
+  --color-vb-green: var(--vb-green);
+  --color-vb-maroon: var(--vb-maroon);
+  --font-sans: var(--font-plex-sans);
+  --font-serif: var(--font-plex-serif);
+  --font-mono: var(--font-plex-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-plex-sans);
+  font-feature-settings: "ss01";
 }
 
-/* ── Grid background pattern ── */
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
+/* Subtle paper grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ── Gradient text utility ── */
-.gradient-text {
-  background: linear-gradient(135deg, #00B4D8, #38BDF8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ── Buttons: rectangular, hard offset shadow (print/retro tactility) ── */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-plex-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.8rem 1.4rem;
+  border: 1px solid var(--ink);
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+.btn-primary {
+  background: var(--vb-blue);
+  border-color: var(--vb-blue);
+  color: var(--paper-raised);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.btn-primary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: 3px 3px 0 rgba(29, 27, 22, 0.18);
+}
+.btn-secondary:hover {
+  background: var(--paper-raised);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 rgba(29, 27, 22, 0.18);
+}
+.btn-secondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(29, 27, 22, 0.18);
 }
 
-/* ── Cursor blink ── */
+/* ── Editor / terminal frame: clean, platform-neutral ── */
+.frame {
+  background: var(--paper-raised);
+  border: 1px solid var(--ink);
+  box-shadow: 6px 6px 0 rgba(29, 27, 22, 0.12);
+}
+.frame-header {
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-plex-mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  user-select: none;
+}
+.frame-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  color: var(--ink);
+  border-right: 1px solid var(--rule);
+  border-bottom: 2px solid var(--vb-blue);
+  margin-bottom: -1px;
+  font-weight: 500;
+}
+.frame-status {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  border-top: 1px solid var(--rule);
+  padding: 0.4rem 1rem;
+  font-family: var(--font-plex-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  user-select: none;
+}
+.frame-link {
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.frame-link:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 rgba(29, 27, 22, 0.14);
+}
+.frame-dark {
+  background: var(--term-bg);
+  border-color: var(--ink);
+}
+.frame-dark .frame-header {
+  color: rgba(214, 210, 196, 0.5);
+  border-bottom-color: rgba(214, 210, 196, 0.15);
+}
+.frame-dark .frame-tab {
+  color: var(--term-fg);
+  border-right-color: rgba(214, 210, 196, 0.15);
+}
+.frame-dark .frame-status {
+  color: rgba(214, 210, 196, 0.45);
+  border-top-color: rgba(214, 210, 196, 0.15);
+}
+
+/* ── Links ── */
+.link-plain {
+  color: var(--vb-blue);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(22, 51, 158, 0.35);
+  transition: text-decoration-color 150ms ease;
+}
+.link-plain:hover {
+  text-decoration-color: var(--vb-blue);
+}
+
+/* ── Cursor blink (terminal) ── */
 @keyframes blink {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  50%      { opacity: 0; }
 }
 .cursor-blink {
   animation: blink 1s step-end infinite;
 }
 
-/* ── Button glow pulse ── */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 180, 216, 0.3); }
-  50%       { box-shadow: 0 0 50px rgba(0, 180, 216, 0.6), 0 0 80px rgba(0, 180, 216, 0.2); }
+/* ── Staggered load reveal ── */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.btn-glow:hover {
-  animation: glowPulse 2s ease-in-out infinite;
+.rise {
+  animation: riseIn 0.55s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+}
+.rise-1 { animation-delay: 0.05s; }
+.rise-2 { animation-delay: 0.14s; }
+.rise-3 { animation-delay: 0.23s; }
+.rise-4 { animation-delay: 0.32s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise, .rise-1, .rise-2, .rise-3, .rise-4 { animation: none; }
 }
 
-/* ── Section fade-up ── */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.fade-up {
-  animation: fadeUp 0.6s ease forwards;
-}
-
-/* ── Custom scrollbar ── */
+/* ── Scrollbar: quiet, light ── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0D1117;
+  background: var(--paper);
 }
 ::-webkit-scrollbar-thumb {
-  background: #2D3748;
-  border-radius: 3px;
+  background: var(--rule);
+  border: 2px solid var(--paper);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4A5568;
+  background: var(--ink-faint);
 }
 
 /* ── Text selection ── */
 ::selection {
-  background: rgba(0, 180, 216, 0.25);
+  background: var(--vb-blue);
   color: #fff;
 }

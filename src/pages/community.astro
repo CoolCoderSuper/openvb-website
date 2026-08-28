@@ -3,50 +3,38 @@ import Layout from '../layouts/Layout.astro';
 
 const CONTRIBUTION_WAYS = [
   {
-    icon: "⌨️",
     title: "Write Code",
-    description: "Pick up an open issue on any of our projects. VB.NET preferred, but TypeScript and C# contributions are welcome too.",
-    accent: "#00B4D8",
+    description: "Pick up an open issue on any of our projects. VB.NET preferred; TypeScript and C# welcome where the tooling needs them.",
     cta: "Browse open issues",
     href: "https://github.com/OpenVBdotnet/",
   },
   {
-    icon: "📝",
     title: "Write Docs",
-    description: "Great documentation is as important as great code. Help write tutorials, API references, and getting-started guides.",
-    accent: "#F59E0B",
+    description: "Documentation matters as much as code. Tutorials, API references, and getting-started guides all need authors.",
     cta: "Docs on GitHub",
     href: "https://github.com/OpenVBdotnet/",
   },
   {
-    icon: "💡",
     title: "File Proposals",
-    description: "Have an idea for a new project, a language feature, or a tooling improvement? Open a GitHub Discussion and let's talk.",
-    accent: "#A855F7",
+    description: "Have an idea for a project, a language feature, or a tooling improvement? Open a discussion and make the case.",
     cta: "Open a discussion",
     href: "https://github.com/OpenVBdotnet/",
   },
   {
-    icon: "🔍",
     title: "Review PRs",
-    description: "Code review is one of the most impactful ways to contribute. Help maintain quality and mentor new contributors.",
-    accent: "#10B981",
+    description: "Careful review keeps quality high and teaches newer contributors. It counts as much as writing the code.",
     cta: "View open PRs",
     href: "https://github.com/OpenVBdotnet/",
   },
   {
-    icon: "📣",
     title: "Advocate",
-    description: "Blog about VB.NET. Post on social media. Tell your employer. The best way to grow the community is to make noise.",
-    accent: "#F43F5E",
+    description: "Write about VB.NET. Show a colleague. A language grows when people can see it working in public.",
     cta: "Share OpenVB",
     href: "https://github.com/OpenVBdotnet/",
   },
   {
-    icon: "🐛",
     title: "Report Issues",
-    description: "Found a bug? Got a tooling complaint? Clear bug reports with reproducers are an enormous contribution to quality.",
-    accent: "#60A5FA",
+    description: "A clear bug report with a reproducer is one of the most valuable contributions a project can receive.",
     cta: "File an issue",
     href: "https://github.com/OpenVBdotnet/",
   },
@@ -57,116 +45,100 @@ const CONTRIBUTION_WAYS = [
   title="Community — OpenVB Foundation"
   description="Join the OpenVB Foundation community. Find out how to contribute code, write docs, file proposals, and help build the future of Visual Basic."
 >
-  <div class="min-h-screen bg-[#07090F] text-slate-100 overflow-x-hidden">
+  <div class="overflow-x-hidden">
     <!-- Hero -->
-    <section class="relative pt-36 pb-24 px-6 lg:px-10">
-      <div
-        class="absolute inset-0 pointer-events-none"
-        style="background: linear-gradient(180deg, #0D1033 0%, #07090F 70%)"
-      ></div>
-      <div class="absolute inset-0 grid-bg pointer-events-none"></div>
-      <div
-        class="absolute top-16 left-[10%] w-[600px] h-[500px] rounded-full pointer-events-none"
-        style="background: radial-gradient(circle, rgba(0,180,216,0.07) 0%, transparent 70%)"
-      ></div>
-      <div
-        class="absolute top-32 right-[5%] w-[400px] h-[400px] rounded-full pointer-events-none"
-        style="background: radial-gradient(circle, rgba(168,85,247,0.06) 0%, transparent 70%)"
-      ></div>
-
-      <div class="relative z-10 max-w-7xl mx-auto">
-        <h1 class="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
-          Build it with us.
+    <section class="pt-24 lg:pt-28 pb-20 px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto">
+        <h1 class="rise font-serif text-5xl lg:text-6xl font-medium tracking-tight text-ink">
+          Build it <em class="text-vb-blue">with us.</em>
         </h1>
 
-        <p class="text-lg text-slate-400 max-w-2xl leading-relaxed">
-          OpenVB Foundation is open to everyone — VB veterans, curious beginners, and
-          everyone in between. Whether you write code, prose, or just want to follow along,
-          there's a place for you here.
+        <p class="rise rise-1 text-lg text-ink-soft max-w-2xl leading-relaxed mt-7">
+          Everything the foundation makes is built in public, by whoever shows up.
         </p>
 
-        <div class="flex flex-wrap items-center gap-3 mt-10">
-          <!-- Discord -->
+        <div class="rise rise-2 grid md:grid-cols-2 gap-6 mt-12 max-w-4xl">
           <a
             href="https://discord.gg/p3w3ryST92"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex items-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 hover:opacity-90"
-            style="background: #5865F2; color: #fff"
+            class="frame frame-link flex flex-col"
           >
-            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 shrink-0">
-              <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 00-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 00-5.487 0 12.36 12.36 0 00-.617-1.23A.077.077 0 008.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 00-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 00.031.055 20.03 20.03 0 005.993 2.98.078.078 0 00.084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 01-1.872-.878.075.075 0 01-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 01.078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 01.079.009c.12.098.245.195.372.288a.075.075 0 01-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 00-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 00.084.028 19.963 19.963 0 006.002-2.981.076.076 0 00.032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 00-.031-.028z" />
-            </svg>
-            Join on Discord
+            <div class="frame-header">
+              <span class="frame-tab">
+                <span class="w-2 h-2 bg-vb-blue shrink-0" aria-hidden="true"></span>
+                Discord
+              </span>
+              <span class="ml-auto mr-3 my-auto text-ink-faint" aria-hidden="true">↗</span>
+            </div>
+            <div class="flex-1 bg-white px-5 py-5">
+              <p class="text-ink-soft text-[15px] leading-relaxed">
+                Questions, planning, and everyday conversation.
+                If you're new, start here.
+              </p>
+            </div>
+            <div class="frame-status">
+              <span>discord.gg/p3w3ryST92</span>
+            </div>
           </a>
 
-          <!-- GitHub -->
           <a
             href="https://github.com/OpenVBdotnet/"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex items-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm border border-white/10 text-slate-300 hover:bg-white/[0.05] hover:border-white/20 transition-all duration-200"
+            class="frame frame-link flex flex-col"
           >
-            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 shrink-0">
-              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-            </svg>
-            GitHub
-          </a>
-
-          <a
-            href="/projects"
-            class="px-6 py-3 rounded-xl font-semibold text-slate-300 text-sm border border-white/10 hover:bg-white/[0.05] hover:border-white/20 transition-all duration-200"
-          >
-            Browse Projects →
+            <div class="frame-header">
+              <span class="frame-tab">
+                <span class="w-2 h-2 bg-vb-blue shrink-0" aria-hidden="true"></span>
+                GitHub
+              </span>
+              <span class="ml-auto mr-3 my-auto text-ink-faint" aria-hidden="true">↗</span>
+            </div>
+            <div class="flex-1 bg-white px-5 py-5">
+              <p class="text-ink-soft text-[15px] leading-relaxed">
+                Code, issues, proposals, and reviews.
+                Every repository is public.
+              </p>
+            </div>
+            <div class="frame-status">
+              <span>github.com/OpenVBdotnet</span>
+            </div>
           </a>
         </div>
       </div>
     </section>
 
     <!-- Ways to contribute -->
-    <section class="py-24 px-6 lg:px-10">
-      <div class="max-w-7xl mx-auto">
-        <div class="mb-14">
-          <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">
-            How to contribute
-          </h2>
-        </div>
+    <section class="pb-28 px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="font-serif text-4xl lg:text-5xl font-medium tracking-tight text-ink mb-14">
+          How to contribute
+        </h2>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 border-t border-l border-rule">
           {CONTRIBUTION_WAYS.map((way) => (
             <a
               href={way.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="group p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12] hover:-translate-y-0.5 transition-all duration-300 flex flex-col gap-4"
+              class="group flex flex-col gap-4 p-7 border-b border-r border-rule hover:bg-paper-raised transition-colors"
             >
-              <div
-                class="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0"
-                style={`background: ${way.accent}14; border: 1px solid ${way.accent}24`}
-              >
-                {way.icon}
-              </div>
-
               <div class="flex-1">
-                <h3 class="text-white font-semibold mb-2">{way.title}</h3>
-                <p class="text-slate-400 text-sm leading-relaxed">{way.description}</p>
+                <h3 class="font-serif text-xl font-medium text-ink mb-2 group-hover:text-vb-blue transition-colors">
+                  {way.title}
+                </h3>
+                <p class="text-ink-soft text-[15px] leading-relaxed">{way.description}</p>
               </div>
 
-              <div
-                class="flex items-center gap-1.5 text-sm font-medium group-hover:gap-2.5 transition-all duration-200"
-                style={`color: ${way.accent}`}
-              >
-                {way.cta}
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+              <div class="font-mono text-[12px] uppercase tracking-[0.1em] text-ink-faint group-hover:text-vb-blue transition-colors">
+                {way.cta} →
               </div>
             </a>
           ))}
         </div>
       </div>
     </section>
-
 
   </div>
 </Layout>
